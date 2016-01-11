@@ -7,3 +7,21 @@ nav img {
 nav .nav {
 	margin-left: 5%;
 }
+
+.sidebar {
+	background: #eee;
+	width: 20%;
+	height: 100vh;
+}
+.wrapper {
+	.sidebar {
+		float: left;
+		display: inline;
+	}
+	.content {
+		float: left;
+		width: 80%;
+		display: inline-block;
+		margin: 0 auto;
+	}
+}

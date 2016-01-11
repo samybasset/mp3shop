@@ -1,4 +1,6 @@
-<?php include('assets/includes/connect.php'); ?>
+<?php include('assets/includes/connect.php');
+session_start(); ?>
+
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -51,7 +53,7 @@
 						if($num > 0)
 						{
 							$_SESSION['login'] = 1;
-							echo '<script>alert("Hooray");</script>';
+							echo '<script> location.href = "login/index.php";</script>';
 						}
 						else {
 							echo '<div class="alert alert-danger" role="alert">Sorry stranger. :(</div>';

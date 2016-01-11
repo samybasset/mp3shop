@@ -1,9 +1,10 @@
-<?php include('assets/includes/connect.php'); ?>
+<?php include('assets/includes/connect.php');
+session_start(); ?>
 <!DOCTYPE html>
 <html lang="en">
 <head>
 	<meta charset="UTF-8">
-	<title>MP3 shop login</title>
+	<title>MP3 shop Register</title>
 	<!-- Latest compiled and minified CSS -->
 	<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/css/bootstrap.min.css" integrity="sha384-1q8mTJOASx8j1Au+a5WDVnPi2lkFfwwEAa8hDDdjZlpLegxhjVME1fgjWPGmkzs7" crossorigin="anonymous">
 	<!-- Custom CSS -->
@@ -14,7 +15,7 @@
 		<?php include 'assets/includes/header.php'; ?>
 		<div class="container">
 			<!-- Begin nav -->
-		
+			<div class="well"><h3>Please register for an account.</h3></div>
 			<!-- End nav -->
 
 			<!-- Begin login form -->
@@ -42,25 +43,18 @@
 					if(!empty($_POST['username'] && $_POST['password']))
 					{
 						$username = $_POST['username'];
-						$password = hash("sha256", $_POST['password']);
-						// $password = $_POST['password'];
-						$q = $db->prepare('select * from users where username = :1 AND password = :2');
-						$q->execute(array(':1' => $username, ':2' => $password));
-						$num = $q->rowCount();
-						$row = $q->fetch(PDO::FETCH_ASSOC);
-						if($num > 0)
-						{
-							$_SESSION['login'] = 1;
-							echo '<script>alert("Hooray");</script>';
-						}
-						else {
-							echo '<div class="alert alert-danger" role="alert">Sorry stranger. :(</div>';
-						}
+						$password = hash('sha256', $_POST['password']);
+
+						$q = $db->prepare('insert into users (`username`, `password`) values (:1, :2)');
+						$q->execute(array(":1" => $username, ":2" => $password));
+						echo '<script>location.href = "login/index.php";</script>';
+						$_SESSION['login'] = 1;
 					}
 					else
 					{
 						echo '<div class="alert alert-danger" role="alert">Please fill in all the fields.</div>';
 					}
+
 				}
 			?>
 		</div>

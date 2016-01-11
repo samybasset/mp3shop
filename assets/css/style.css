@@ -9,3 +9,23 @@ nav img {
 nav .nav {
   margin-left: 5%;
 }
+
+/* line 11, ../scss/style.scss */
+.sidebar {
+  background: #eee;
+  width: 20%;
+  height: 100vh;
+}
+
+/* line 17, ../scss/style.scss */
+.wrapper .sidebar {
+  float: left;
+  display: inline;
+}
+/* line 21, ../scss/style.scss */
+.wrapper .content {
+  float: left;
+  width: 80%;
+  display: inline-block;
+  margin: 0 auto;
+}
