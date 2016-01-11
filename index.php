@@ -16,7 +16,6 @@ session_start(); ?>
 		<?php include 'assets/includes/header.php'; ?>
 		<div class="container">
 			<!-- Begin nav -->
-		
 			<!-- End nav -->
 			<div class="well"><h3>Please login to see the album dashboard.</h3></div>
 			<!-- Begin login form -->

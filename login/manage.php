@@ -60,7 +60,6 @@ if($_SESSION['login'] != 1)
 						?>
 					</tbody>
 				</table>
-
 			</div>
 		</div>
 	</div>

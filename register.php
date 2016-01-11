@@ -17,7 +17,6 @@ session_start(); ?>
 			<!-- Begin nav -->
 			<div class="well"><h3>Please register for an account.</h3></div>
 			<!-- End nav -->
-
 			<!-- Begin login form -->
 			<form method="POST">
 				<div class="form-group">
@@ -54,7 +53,6 @@ session_start(); ?>
 					{
 						echo '<div class="alert alert-danger" role="alert">Please fill in all the fields.</div>';
 					}
-
 				}
 			?>
 		</div>
