@@ -1,0 +1,11 @@
+/* line 1, ../scss/style.scss */
+nav img {
+  width: 5%;
+  float: left;
+  display: inline-block;
+}
+
+/* line 7, ../scss/style.scss */
+nav .nav {
+  margin-left: 5%;
+}

@@ -16,7 +16,7 @@
 			<!-- Begin nav -->
 		
 			<!-- End nav -->
-			<div class="well"><h3>Please login to see the album dashboard.</h3></div>
+
 			<!-- Begin login form -->
 			<form method="POST">
 				<div class="form-group">
@@ -28,7 +28,7 @@
 					<input type="password" class="form-control" id="password" name="password" placeholder="Voer wachtwoord in" required>
 				</div>
 				<div class="form-group">
-					<a href="register.php">Klik hier om aan te melden</a>
+					<a href="#">Klik hier om aan te melden</a>
 				</div>
 				<div class="form-group">
 					<input type="submit" class="btn btn-default" name='submit' value='Login'>
