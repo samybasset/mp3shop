@@ -54,27 +54,24 @@ if($_SESSION['login'] != 1)
 							while($row = $q->fetch(PDO::FETCH_ASSOC))
 							{
 								echo "
+										<form method='get'>
 										<tr>
 											<td>
-												<form method='post'>
-													<span>".$row['userID']."</span>
-												</form>
+												
+													".$row['userID']."
 											</td>
 											<td>
-												<form method='post'>
 													<span>".$row['username']."</span>
-													<input type='text' name='val' value='".$row['username']."'>
 													<input type='hidden' name='row' value='username'>
 													<input type='hidden' name='userID' value='".$row['userID']."'>
-													<input type='submit' name='submit' value='' class='editTable'>
-												</form>
 											</td>
 											<td>
-												<input type='submit' value='click here to reset password'>
+													<input type='submit' value='click here to reset password' name='reset'>
+													<input type='hidden' name='userID' value='".$row['userID']."'>
+												</form>
 											</td>
-											<td><button type='text' class='edit'><i class='fa fa-pencil'></i></button></td>
-											<td><form method='post'><input type='hidden' name='deleteID' value='".$row['userID']."'><input type='submit' name='delete' class='delete' value=''></td>
 										</tr>
+										</form>
 									";
 							}
 							if(isset($_POST['submit']))
@@ -82,12 +79,25 @@ if($_SESSION['login'] != 1)
 								// call the updatefield function with the correct parrameters that is collected from inputs in the while loop.
 								updateField($_POST['userID'], $_POST['row'], $_POST['val']);
 								echo '<script>location.href = "users.php";</script>';
+								$q = prepare('select * from users');
+								$q->execute();
+
+								$row = $q-> fetch(PDO::FETCH_ASSOC);
+								echo "<a href='resetpassword.php?userID=".$_GET['userID']."'>resetpassword.php'?userID=".$_GET['userID']."</a>";
 							}
 							if(isset($_POST['delete']))
 							{
 									// call the deleteRow function with the correct parrameters that is collected from inputs in the while loop.
 								deleteRow($_POST['deleteID']);
 								echo '<script>location.href = "users.php";</script>';
+							}
+							if(isset($_GET['reset']))
+							{
+								$q = $db->prepare('select * from users');
+								$q->execute();
+								// echo "<script>alert('hooray');</script>";
+								$row = $q-> fetch(PDO::FETCH_ASSOC);
+								echo "<a href='resetpassword.php?userID=".$_GET['userID']."'>resetpassword.php'?userID=".$_GET['userID']."</a>";
 							}
 						?>
 					</tbody>

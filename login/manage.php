@@ -47,7 +47,7 @@ if($_SESSION['login'] != 1)
 								$q = $db->prepare('update album set '.$field.' = :1 where albumcode = :2');
 								$q->execute(array(":1" => $value, ":2" => $albumcode));
 							}
-
+							//function for deleting selected row.
 							function deleteRow($albumcode) {
 								include '../assets/includes/connect.php';
 								$q = $db->prepare('delete from album where albumcode = :1');
@@ -67,7 +67,7 @@ if($_SESSION['login'] != 1)
 														<input type='text' name='val' value='".$row['albumcode']."'>
 														<input type='hidden' name='row' value='albumcode'>
 														<input type='hidden' name='albumcode' value='".$row['albumcode']."'>
-														<input type='submit' name='submit' value='' class='editTable'>
+														<button name='submit' value='' class='editTable'><i class='fa fa-check'></i></button>
 													</form>
 												</td>
 												<td>
@@ -76,7 +76,7 @@ if($_SESSION['login'] != 1)
 														<input type='text' name='val' value='".$row['titel']."'>
 														<input type='hidden' name='row' value='titel'>
 														<input type='hidden' name='albumcode' value='".$row['albumcode']."'>
-														<input type='submit' name='submit' value='' class='editTable'>
+														<button name='submit' value='' class='editTable'><i class='fa fa-check'></i></button>
 													</form>
 												</td>
 												<td>
@@ -85,7 +85,7 @@ if($_SESSION['login'] != 1)
 														<input type='text' name='val' value='".$row['artiest']."'>
 														<input type='hidden' name='row' value='artiest'>
 														<input type='hidden' name='albumcode' value='".$row['albumcode']."'>
-														<input type='submit' name='submit' value='' class='editTable'>
+														<button name='submit' value='' class='editTable'><i class='fa fa-check'></i></button>
 													</form>
 												</td>
 												<td>
@@ -94,7 +94,7 @@ if($_SESSION['login'] != 1)
 														<input type='text' name='val' value='".$row['genre']."'>
 														<input type='hidden' name='row' value='genre'>
 														<input type='hidden' name='albumcode' value='".$row['albumcode']."'>
-														<input type='submit' name='submit' value='' class='editTable'>
+														<button name='submit' value='' class='editTable'><i class='fa fa-check'></i></button>
 													</form>
 												</td>
 												<td>
@@ -103,7 +103,7 @@ if($_SESSION['login'] != 1)
 														<input type='text' name='val' value='".$row['prijs']."'>
 														<input type='hidden' name='row' value='prijs'>
 														<input type='hidden' name='albumcode' value='".$row['albumcode']."'>
-														<input type='submit' name='submit' value='' class='editTable'>
+														<button name='submit' value='' class='editTable'><i class='fa fa-check'></i></button>
 													</form>
 												</td>
 												<td>
@@ -112,7 +112,7 @@ if($_SESSION['login'] != 1)
 														<input type='text' name='val' value='".$row['voorraad']."'>
 														<input type='hidden' name='row' value='voorraad'>
 														<input type='hidden' name='albumcode' value='".$row['albumcode']."'>
-														<input type='submit' name='submit' value='' class='editTable'>
+														<button name='submit' value='' class='editTable'><i class='fa fa-check'></i></button>
 													</form>
 												</td>
 												<td>
@@ -121,11 +121,11 @@ if($_SESSION['login'] != 1)
 														<input type='text' name='val' value='".$row['aantal']."'>
 														<input type='hidden' name='row' value='aantal'>
 														<input type='hidden' name='albumcode' value='".$row['albumcode']."'>
-														<input type='submit' name='submit' value='' class='editTable'>
+														<button name='submit' value='' class='editTable'><i class='fa fa-check'></i></button>
 													</form>
 												</td>
 												<td><button type='text' class='edit'><i class='fa fa-pencil'></i></button></td>
-												<td><form method='post'><input type='hidden' name='deleteID' value='".$row['albumcode']."'><input type='submit' name='delete' class='delete' value=''></td>
+												<td><form method='post'><input type='hidden' name='deleteID' value='".$row['albumcode']."'><button type='submit' name='delete' class='delete' value=''><i class='fa fa-trash'></i></button></td>
 											</tr>
 									";
 							}

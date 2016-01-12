@@ -1,30 +1,28 @@
-/*nav for login and register page*/
-/* line 2, ../scss/style.scss */
+/* line 1, ../scss/style.scss */
 nav img {
   width: 5%;
   float: left;
   display: inline-block;
 }
 
-/* line 8, ../scss/style.scss */
+/* line 7, ../scss/style.scss */
 nav .nav {
   margin-left: 5%;
 }
 
-/*sidebar for dashboard pages.*/
-/* line 14, ../scss/style.scss */
+/* line 11, ../scss/style.scss */
 .sidebar {
   background: #eee;
   width: 20%;
   height: 100vh;
 }
 
-/* line 20, ../scss/style.scss */
+/* line 17, ../scss/style.scss */
 .wrapper .sidebar {
   float: left;
   display: inline;
 }
-/* line 24, ../scss/style.scss */
+/* line 21, ../scss/style.scss */
 .wrapper .content {
   float: left;
   width: 80%;
@@ -33,33 +31,33 @@ nav .nav {
 }
 
 /*username area in sidebar*/
-/* line 33, ../scss/style.scss */
+/* line 30, ../scss/style.scss */
 .username span {
   text-decoration: underline;
 }
-/* line 37, ../scss/style.scss */
+/* line 34, ../scss/style.scss */
 .username li {
   list-style: none;
 }
 
-/* line 45, ../scss/style.scss */
+/* line 42, ../scss/style.scss */
 .content table th {
   font-weight: bolder;
 }
-/* line 49, ../scss/style.scss */
+/* line 46, ../scss/style.scss */
 .content span {
   display: none;
 }
-/* line 52, ../scss/style.scss */
+/* line 49, ../scss/style.scss */
 .content button {
   background: none;
   border: none;
 }
-/* line 56, ../scss/style.scss */
+/* line 53, ../scss/style.scss */
 .content input[type="text"] {
   width: 50%;
 }
-/* line 60, ../scss/style.scss */
+/* line 57, ../scss/style.scss */
 .content .editTable,
 .content .delete {
   border: none;
@@ -67,21 +65,19 @@ nav .nav {
   background-position: center;
   background-color: transparent;
 }
-/* line 66, ../scss/style.scss */
+/* line 63, ../scss/style.scss */
 .content .editTable {
   width: 20%;
-  background-image: url(https://cdn0.iconfinder.com/data/icons/mobile-development-icons/256/Post.png);
   background-size: 50%;
 }
-/* line 71, ../scss/style.scss */
+/* line 68, ../scss/style.scss */
 .content .delete {
   width: 50%!important;
-  background-image: url(http://findicons.com/files/icons/1580/devine_icons_part_2/128/trash_recyclebin_empty_closed.png) !important;
   background-size: 90%!important;
   border: none!important;
 }
 
-/* line 79, ../scss/style.scss */
+/* line 75, ../scss/style.scss */
 body.users .editTable {
   background-size: 20%;
 }
