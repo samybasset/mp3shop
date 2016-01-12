@@ -5,6 +5,8 @@ session_start(); ?>
 <head>
 	<meta charset="UTF-8">
 	<title>MP3 shop Register</title>
+	<!-- Font awesome CDN -->
+	<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/font-awesome/4.5.0/css/font-awesome.min.css">
 	<!-- Latest compiled and minified CSS -->
 	<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/css/bootstrap.min.css" integrity="sha384-1q8mTJOASx8j1Au+a5WDVnPi2lkFfwwEAa8hDDdjZlpLegxhjVME1fgjWPGmkzs7" crossorigin="anonymous">
 	<!-- Custom CSS -->
@@ -48,6 +50,7 @@ session_start(); ?>
 						$q->execute(array(":1" => $username, ":2" => $password));
 						echo '<script>location.href = "login/index.php";</script>';
 						$_SESSION['login'] = 1;
+						$_SESSION['username'] = $_POST['username'];
 					}
 					else
 					{

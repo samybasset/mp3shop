@@ -1,12 +1,15 @@
+/*nav for login and register page*/
 nav img {
-    width: 5%;
-    float: left;
-    display: inline-block;
+  width: 5%;
+  float: left;
+  display: inline-block;
 }
 
 nav .nav {
 	margin-left: 5%;
 }
+
+/*sidebar for dashboard pages.*/
 
 .sidebar {
 	background: #eee;
@@ -25,3 +28,55 @@ nav .nav {
 		margin: 0 auto;
 	}
 }
+/*username area in sidebar*/
+.username {
+	span {
+		text-decoration: underline;
+	}
+
+	li {
+		list-style: none;
+	}
+	
+}
+
+.content {
+	table {
+		th {
+				font-weight: bolder;
+			}
+		}
+		span {
+			display: none;
+		}
+		button {
+			background: none;
+			border: none;
+		}
+		input[type="text"] {
+	    	width: 50%;
+		}
+		.editTable, 
+		.delete {
+			border: none;
+			background-repeat: no-repeat;
+			background-position: center;
+			background-color: transparent;
+		}
+		.editTable {
+    	width: 20%;
+	    background-image: url(https://cdn0.iconfinder.com/data/icons/mobile-development-icons/256/Post.png);
+	    background-size: 50%;
+		}
+		.delete {
+			width: 50%!important;
+			background-image: url(http://findicons.com/files/icons/1580/devine_icons_part_2/128/trash_recyclebin_empty_closed.png)!important;
+			background-size: 90%!important;
+			border: none!important;
+		}
+	}
+	body.users {
+		.editTable {
+			background-size: 20%;
+		}
+	}
