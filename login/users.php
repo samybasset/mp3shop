@@ -38,18 +38,18 @@ if($_SESSION['login'] != 1)
 						// function for editing existing albums.
 							function updateField($userID, $field, $value) {
 								include '../assets/includes/connect.php';
-								$q = $db->prepare('update users set '.$field.' = :1 where userID = :2');
+								$q = $db->prepare('update users set '.$field.' = :1 where ID = :2');
 								$q->execute(array(":1" => $value, ":2" => $userID));
 							}
 
 							function deleteRow($userID) {
 								include '../assets/includes/connect.php';
-								$q = $db->prepare('delete from users where userID = :1');
+								$q = $db->prepare('delete from users where ID = :1');
 								$q->execute(array(":1" => $userID));
 							}
 
 							//Looping trough all albums and showing them in a table.
-							$q = $db->prepare("select distinct * from users");
+							$q = $db->prepare("select distinct * from klant");
 							$q->execute();
 							while($row = $q->fetch(PDO::FETCH_ASSOC))
 							{
@@ -58,16 +58,16 @@ if($_SESSION['login'] != 1)
 										<tr>
 											<td>
 												
-													".$row['userID']."
+													".$row['ID']."
 											</td>
 											<td>
-													<span>".$row['username']."</span>
+													".$row['email']."
 													<input type='hidden' name='row' value='username'>
-													<input type='hidden' name='userID' value='".$row['userID']."'>
+													<input type='hidden' name='userID' value='".$row['ID']."'>
 											</td>
 											<td>
 													<input type='submit' value='click here to reset password' name='reset'>
-													<input type='hidden' name='userID' value='".$row['userID']."'>
+													<input type='hidden' name='userID' value='".$row['ID']."'>
 												</form>
 											</td>
 										</tr>
@@ -93,7 +93,7 @@ if($_SESSION['login'] != 1)
 							}
 							if(isset($_GET['reset']))
 							{
-								$q = $db->prepare('select * from users');
+								$q = $db->prepare('select * from klant');
 								$q->execute();
 								// echo "<script>alert('hooray');</script>";
 								$row = $q-> fetch(PDO::FETCH_ASSOC);

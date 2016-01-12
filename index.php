@@ -23,8 +23,8 @@ session_start(); ?>
 			<!-- Begin login form -->
 			<form method="POST">
 				<div class="form-group">
-					<label for="username">Gebruikersnaam</label>
-					<input type="text" class="form-control" id="username" name="username" placeholder="Voer gebruikersnaam in" required>
+					<label for="name">Gebruikersnaam</label>
+					<input type="text" class="form-control" id="name" name="name" placeholder="Voer gebruikersnaam in" required>
 				</div>
 				<div class="form-group">
 					<label for="password">Wachtwoord</label>
@@ -42,19 +42,18 @@ session_start(); ?>
 				//if login button is posted
 				if(isset($_POST['submit']))
 				{
-					if(!empty($_POST['username'] && $_POST['password']))
+					if(!empty($_POST['name'] && $_POST['password']))
 					{
-						$username = $_POST['username'];
 						$password = hash("sha256", $_POST['password']);
 						// $password = $_POST['password'];
-						$q = $db->prepare('select * from users where username = :1 AND password = :2');
-						$q->execute(array(':1' => $username, ':2' => $password));
+						$q = $db->prepare('select * from klant where email = :1 AND password = :2');
+						$q->execute(array(':1' => $_POST['name'], ':2' => $password));
 						$num = $q->rowCount();
 						$row = $q->fetch(PDO::FETCH_ASSOC);
 						if($num > 0)
 						{
 							$_SESSION['login'] = 1;
-							$_SESSION['username'] = $_POST['username'];
+							$_SESSION['naam'] = $_POST['name'];
 							echo '<script> location.href = "login/index.php";</script>';
 						}
 						else {

@@ -28,11 +28,11 @@ if($_SESSION['login'] != 1) // if loggin session doesnt equals 1 redirect too lo
 				<div class="well">
 					<?php 
 						$id = $_GET['userID']; // retrieve get variable from previous page
-						$q = $db->prepare('select * from users where userID = :1'); // query select all whre userID = retrieved get variable
+						$q = $db->prepare('select * from klant where ID = :1'); // query select all whre userID = retrieved get variable
 						$q->execute(array(":1" => $id));
 						$row = $q->fetch(PDO::FETCH_ASSOC); // retrieve data from database.
 					?>
-					<h4>Hello <?php echo ucfirst($row['username']) ?>, fill in your new password to reset your password.</h4> <!-- Show username above password fields.-->
+					<h4>Hello <?php echo ucfirst($row['naam']) ?>, fill in your new password to reset your password.</h4> <!-- Show username above password fields.-->
 				</div>
 				<form method='post'>
 				<div class="form-group">
@@ -54,7 +54,7 @@ if($_SESSION['login'] != 1) // if loggin session doesnt equals 1 redirect too lo
 						if($_POST['password'] == $_POST['repeatPassword'])//if passwords match
 						{
 							$password = hash("sha256", $_POST['password']);//hashing password too sha256
-							$q = $db->prepare("update users set `password` = :1 where userID = :2");//query update user password where id is the userID that is stored in Get variable.
+							$q = $db->prepare("update klant set `password` = :1 where ID = :2");//query update user password where id is the userID that is stored in Get variable.
 							$q->execute(array(":1" => $password, ":2" => $_GET['userID']));// execute prepared query
 							echo "<script>location.href = 'users.php'</script>";// switch location too users.php page.
 						}

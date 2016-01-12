@@ -1,6 +1,6 @@
 <div class="username">
 	<ul>
-		<li><p>Logged in as: <span><?php echo $_SESSION['username']; ?></span></p></li>
+		<li><p>Logged in as: <span><?php echo $_SESSION['naam']; ?></span></p></li>
 	</ul>
 </div>
 <nav>

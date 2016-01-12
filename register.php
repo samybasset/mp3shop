@@ -22,12 +22,28 @@ session_start(); ?>
 			<!-- Begin login form -->
 			<form method="POST">
 				<div class="form-group">
-					<label for="username">Gebruikersnaam</label>
-					<input type="text" class="form-control" id="username" name="username" placeholder="Voer gebruikersnaam in" required>
+					<label for="name">Name</label>
+					<input type="text" class='form-control' name='name' id='name' placeholder='Fill in name please' required>
 				</div>
 				<div class="form-group">
-					<label for="password">Wachtwoord</label>
-					<input type="password" class="form-control" id="password" name="password" placeholder="Voer wachtwoord in" required>
+					<label for="address">Address</label>
+					<input type="text" class='form-control' name='address' id='address' placeholder='Fill in address please' required>
+				</div>
+				<div class="form-group">
+					<label for="postcode">Postcode</label>
+					<input type="text" class='form-control' name='postcode' id='postcode' placeholder='Fill in postcode please' required>
+				</div>
+				<div class="form-group">
+					<label for="city">City</label>
+					<input type="text" class='form-control' name='city' id='city' placeholder='Fill in name please' required>
+				</div>
+				<div class="form-group">
+					<label for="username">Email</label>
+					<input type="text" class="form-control" id="username" name="name" placeholder="Fill in email please." required>
+				</div>
+				<div class="form-group">
+					<label for="password">Password</label>
+					<input type="password" class="form-control" id="password" name="password" placeholder="Fill in password please." required>
 				</div>
 				<div class="form-group">
 					<a href="#">Klik hier om aan te melden</a>
@@ -41,16 +57,22 @@ session_start(); ?>
 				//if login button is posted
 				if(isset($_POST['submit']))
 				{
-					if(!empty($_POST['username'] && $_POST['password']))
+					if(!empty($_POST['name'] && $_POST['password']))
 					{
-						$username = $_POST['username'];
 						$password = hash('sha256', $_POST['password']);
 
-						$q = $db->prepare('insert into users (`username`, `password`) values (:1, :2)');
-						$q->execute(array(":1" => $username, ":2" => $password));
+						$q = $db->prepare('insert into klant (`naam`, `adres`, `postcode`, `woonplaats`, `email`, `password`) 
+											values (:1, :2, :3, :4, :5, :6)');
+						$q->execute(array(":1" => $_POST['name'],
+										  ":2" => $_POST['address'],
+										  ":3" => $_POST['postcode'],
+										  ":4" => $_POST['city'],
+										  ":5" => $_POST['name'],
+										  ":6" => $password
+										 ));
 						echo '<script>location.href = "login/index.php";</script>';
 						$_SESSION['login'] = 1;
-						$_SESSION['username'] = $_POST['username'];
+						$_SESSION['naam'] = $_POST['name'];
 					}
 					else
 					{
