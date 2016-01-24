@@ -81,3 +81,8 @@ nav .nav {
 body.users .editTable {
   background-size: 20%;
 }
+
+/* line 79, ../scss/style.scss */
+.even {
+  background-color: #eee;
+}

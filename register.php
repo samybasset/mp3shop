@@ -1,4 +1,5 @@
 <?php include('assets/includes/connect.php');
+$active = "register.php";
 session_start(); ?>
 <!DOCTYPE html>
 <html lang="en">

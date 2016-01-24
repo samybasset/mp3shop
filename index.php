@@ -1,4 +1,5 @@
 <?php include('assets/includes/connect.php');
+$active = "index.php";
 session_start(); ?>
 
 <!DOCTYPE html>

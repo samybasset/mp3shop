@@ -65,7 +65,7 @@ if($_SESSION['login'] != 1)
 
 							foreach($row as $row)
 							{
-								echo ($bgcolor ? "<tr bgcolor=#ccc>" : "<tr>");
+								echo ($bgcolor ? "<tr class='even'>" : "<tr>");
 
 								//check new weborder
 								if($row['weborderID'] == $weborder)
@@ -95,7 +95,7 @@ if($_SESSION['login'] != 1)
 								else
 								{
 									// nieuwe weborder print eerst sub totaal.
-									echo ($bgcolor ? "<tr bgcolor=#ccc>" : "<tr>");
+									echo ($bgcolor ? "<tr class='even'>" : "<tr>");
 										echo "<td></td><td></td>
 													<td><b>Subtotaal</b></td>
 													<td><b>".$subtotaal."</b></td><td></td><td></td>
@@ -104,7 +104,7 @@ if($_SESSION['login'] != 1)
 									$subtotaal = 0;
 									$bgcolor = ($bgcolor ? false:true);
 									//print nieuwe weborder
-									echo ($bgcolor ? "<tr bgcolor=#ccc>" : "<tr>");
+									echo ($bgcolor ? "<tr class='even'>" : "<tr>");
 										echo "<td>".$row['naam']. "</td>
 													<td>".$row['weborderID']."</td>
 													<td>".$row['titel']."</td>
@@ -121,7 +121,7 @@ if($_SESSION['login'] != 1)
 								$weborder = $row['weborderID'];
 							}
 							//print laatste subtotaal en eind totaal
-							echo ($bgcolor ? "<tr bgcolor=#ccc>" : "<tr>");
+							echo ($bgcolor ? "<tr class='even'>" : "<tr>");
 								echo "<td></td><td></td><td></td>
 											<td><b>Subtotaal</b></td>
 											<td>".$subtotaal."</td><td></td>
