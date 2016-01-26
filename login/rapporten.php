@@ -43,6 +43,7 @@ if($_SESSION['login'] != 1)
 							<th>Prijs</th>	
 							<th>Aantal</th>
 							<th>Bedrag</th>
+							<th>Download PDF</th>
 						</tr>
 					<tbody>
 						<?php 
@@ -50,6 +51,7 @@ if($_SESSION['login'] != 1)
 															 where email = :1');
 							$q->execute(array(":1" => $_SESSION['naam']));
 							$row = $q->fetch(PDO::FETCH_ASSOC);
+							$_SESSION['role'] = $row['role'];
 
 							if($row['role'] == 'user')
 							{
@@ -73,6 +75,7 @@ if($_SESSION['login'] != 1)
 
 								foreach($row as $row)
 								{
+									$_GET['weborderID'] = $row['weborderID'];
 									if($row['role'] == 'user') {
 										echo ($bgcolor ? "<tr class='even'>" : "<tr>");
 
@@ -95,6 +98,7 @@ if($_SESSION['login'] != 1)
 															<td>".$row['prijs']."</td>
 															<td>".$row['aantal']."</td>
 															<td>".number_format($row['prijs'] * $row['aantal'],2, '.', '')."</td>
+															<td><a href='pdftest.php?weborderID=".$_GET['weborderID']."''>Download PDF</a></td>
 														</tr>";
 												//keep track of totals
 												$subtotaal += $row['aantal'];
@@ -120,6 +124,7 @@ if($_SESSION['login'] != 1)
 															<td>".$row['prijs']."</td>
 															<td>".$row['aantal']."</td>
 															<td>".number_format($row['prijs'] * $row['aantal'],2)."</td>
+															<td><a href='pdftest.php?weborderID=".$_GET['weborderID']."''>Download PDF</a></td>
 														</tr>";
 											//totalen bij houden
 											$subtotaal += $row['aantal'];
@@ -171,10 +176,12 @@ if($_SESSION['login'] != 1)
 												//klant en weborder niet herhalen
 												echo "<td></td><td></td>";
 											}
+												$_GET['weborderID'] = $row['weborderID'];
 												echo "<td>".$row['titel']."</td>
 															<td>".$row['prijs']."</td>
 															<td>".$row['aantal']."</td>
 															<td>".number_format($row['prijs'] * $row['aantal'],2, '.', '')."</td>
+															<td><a href='pdftest.php?weborderID=".$_GET['weborderID']."''>Download PDF</a></td>
 														</tr>";
 												//keep track of totals
 												$subtotaal += $row['aantal'];
@@ -192,6 +199,7 @@ if($_SESSION['login'] != 1)
 														";
 											$subtotaal = 0;
 											$bgcolor = ($bgcolor ? false:true);
+											$_GET['weborderID'] = $row['weborderID'];
 											//print nieuwe weborder
 											echo ($bgcolor ? "<tr class='even'>" : "<tr>");
 												echo "<td>".$row['naam']. "</td>
@@ -200,6 +208,7 @@ if($_SESSION['login'] != 1)
 															<td>".$row['prijs']."</td>
 															<td>".$row['aantal']."</td>
 															<td>".number_format($row['prijs'] * $row['aantal'],2)."</td>
+															<td><a href='pdftest.php?weborderID=".$_GET['weborderID']."''>Download PDF</a></td>
 														</tr>";
 											//totalen bij houden
 											$subtotaal += $row['aantal'];
