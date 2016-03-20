@@ -1,10 +1,4 @@
-<?php include('../assets/includes/connect.php'); 
-session_start();
-if($_SESSION['login'] != 1)
-{
-	echo '<script>location.href = "../index.php";</script>';
-}
-?>
+<?php require '../init.php'; ?>
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -24,7 +18,7 @@ if($_SESSION['login'] != 1)
 		</div>
 		<div class="content">
 			<div class="container">
-				<div class="well"><h3>Jeej</h3></div>	
+				<div class="well"><h3>Jeej</h3></div>
 			</div>
 		</div>
 	</div>

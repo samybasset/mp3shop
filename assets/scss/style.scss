@@ -34,7 +34,7 @@ nav .nav {
 	li {
 		list-style: none;
 	}
-	
+
 }
 
 .content {
@@ -47,13 +47,13 @@ nav .nav {
 			display: none;
 		}
 		button {
-			background: none;
-			border: none;
+			// background: none;
+			// border: none;
 		}
 		input[type="text"] {
 	    	width: 50%;
 		}
-		.editTable, 
+		.editTable,
 		.delete {
 			border: none;
 			background-repeat: no-repeat;
@@ -62,7 +62,7 @@ nav .nav {
 		}
 		.editTable {
     	width: 20%;
-	   
+
 	    background-size: 50%;
 		}
 		.delete {
@@ -79,3 +79,14 @@ nav .nav {
 	.even {
 		background-color: #eee;
 	}
+
+  .orders {
+    width: 60%;
+    text-align: center;
+    float: left;
+  }
+
+  .shoppingcart {
+    width: 40%;
+    float: left;
+  }

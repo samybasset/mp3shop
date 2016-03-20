@@ -1,9 +1,11 @@
-<?php include('../assets/includes/connect.php'); 
-session_start();
-if($_SESSION['login'] != 1)
-{
-	echo '<script>location.href = "../index.php";</script>';
-}
+<?php
+	require '../init.php';
+	$user = new User;
+	$date = new DateTime();
+	$album = new Album();
+	if($user->is_user_logged_in() == false) {
+		header('location: ../index.php');
+	}
 ?>
 <!DOCTYPE html>
 <html lang="en">
@@ -34,114 +36,40 @@ if($_SESSION['login'] != 1)
 							<th>Genre</th>
 							<th>Prijs</th>
 							<th>Voorraad</th>
-							<th>Aantal</th>
 							<th>Edit</th>
 							<th>Delete</th>
 						</tr>
-					</th>	
+					</th>
 					<tbody>
-						<?php 
-						// function for editing existing albums.
-							function updateField($albumcode, $field, $value) {
-								include '../assets/includes/connect.php';
-								$q = $db->prepare('update album set '.$field.' = :1 where albumcode = :2');
-								$q->execute(array(":1" => $value, ":2" => $albumcode));
+						<?php
+							$get_albums = $album->get_albums();
+							foreach($get_albums as $get_album) {
+								echo '
+												<tr>
+													<td>'.$get_album['ID'].'<input type="hidden" name="ID" value="'.$get_album['ID'].'"></td>
+													<form method="post"><td><input type="text" name="val" value="'.$get_album['titel'].'"><button name="update"><i class="fa fa-check"></i></button><input type="hidden" name="ID" value="'.$get_album['ID'].'"><input type="hidden" name="row" value="titel"></td></form>
+													<form method="post"><td><input type="text" name="val" value="'.$get_album['artiest'].'"><button name="update"><i class="fa fa-check"></i></button><input type="hidden" name="ID" value="'.$get_album['ID'].'"><input type="hidden" name="row" value="artiest"></td></form>
+													<form method="post"><td><input type="text" name="val" value="'.$get_album['genre'].'"><button name="update"><i class="fa fa-check"></i></button><input type="hidden" name="ID" value="'.$get_album['ID'].'"><input type="hidden" name="row" value="genre"></td></form>
+													<form method="post"><td><input type="text" name="val" value="'.$get_album['prijs'].'"><button name="update"><i class="fa fa-check"></i></button><input type="hidden" name="ID" value="'.$get_album['ID'].'"><input type="hidden" name="row" value="prijs"></td></form>
+													<form method="post"><td><input type="text" name="val" value="'.$get_album['voorraad'].'"><button name="update"><i class="fa fa-check"></i></button><input type="hidden" name="ID" value="'.$get_album['ID'].'"><input type="hidden" name="row" value="voorraad"></td></form>
+													<form method="post"><td></td></form>
+													<form method="post"><td><input type="hidden" name="ID" value="'.$get_album['ID'].'"><button name="delete"><i class="fa fa-trash"></i></button></td></form>
+												</tr>
+
+								';
 							}
-							//function for deleting selected row.
-							function deleteRow($albumcode) {
-								include '../assets/includes/connect.php';
-								$q = $db->prepare('delete from album where albumcode = :1');
-								$q->execute(array(":1" => $albumcode));
+							if(isset($_POST['update'])) {//if clicked on update field call update field function
+								$album->update_field($_POST['ID'], $_POST['row'], $_POST['val']);
+								echo '<script>location.href="manage.php"</script>';
+								echo '<script>document.write("jeej")</script>';
 							}
 
-							//Looping trough all albums and showing them in a table.
-							$q = $db->prepare("select distinct * from album");
-							$q->execute();
-							while($row = $q->fetch(PDO::FETCH_ASSOC))
-							{
-								echo "
-											<tr>
-												<td>
-													<form method='post'>
-														<span>".$row['ID']."</span>
-														<input type='text' name='val' value='".$row['ID']."'>
-														<input type='hidden' name='row' value='albumcode'>
-														<input type='hidden' name='albumcode' value='".$row['ID']."'>
-														<button name='submit' value='' class='editTable'><i class='fa fa-check'></i></button>
-													</form>
-												</td>
-												<td>
-													<form method='post'>
-														<span>".$row['titel']."</span>
-														<input type='text' name='val' value='".$row['titel']."'>
-														<input type='hidden' name='row' value='titel'>
-														<input type='hidden' name='albumcode' value='".$row['ID']."'>
-														<button name='submit' value='' class='editTable'><i class='fa fa-check'></i></button>
-													</form>
-												</td>
-												<td>
-													<form method='post'>
-														<span>".$row['artiest']."</span>
-														<input type='text' name='val' value='".$row['artiest']."'>
-														<input type='hidden' name='row' value='artiest'>
-														<input type='hidden' name='albumcode' value='".$row['ID']."'>
-														<button name='submit' value='' class='editTable'><i class='fa fa-check'></i></button>
-													</form>
-												</td>
-												<td>
-													<form method='post'>
-														<span>".$row['genre']."</span>
-														<input type='text' name='val' value='".$row['genre']."'>
-														<input type='hidden' name='row' value='genre'>
-														<input type='hidden' name='albumcode' value='".$row['ID']."'>
-														<button name='submit' value='' class='editTable'><i class='fa fa-check'></i></button>
-													</form>
-												</td>
-												<td>
-													<form method='post'>
-														<span>".$row['prijs']."</span>
-														<input type='text' name='val' value='".$row['prijs']."'>
-														<input type='hidden' name='row' value='prijs'>
-														<input type='hidden' name='albumcode' value='".$row['ID']."'>
-														<button name='submit' value='' class='editTable'><i class='fa fa-check'></i></button>
-													</form>
-												</td>
-												<td>
-													<form method='post'>
-														<span>".$row['voorraad']."</span>
-														<input type='text' name='val' value='".$row['voorraad']."'>
-														<input type='hidden' name='row' value='voorraad'>
-														<input type='hidden' name='albumcode' value='".$row['ID']."'>
-														<button name='submit' value='' class='editTable'><i class='fa fa-check'></i></button>
-													</form>
-												</td>
-												<td>
-													<form method='post'>
-														<span>".$row['voorraad']."</span>
-														<input type='text' name='val' value='".$row['voorraad']."'>
-														<input type='hidden' name='row' value='aantal'>
-														<input type='hidden' name='albumcode' value='".$row['ID']."'>
-														<button name='submit' value='' class='editTable'><i class='fa fa-check'></i></button>
-													</form>
-												</td>
-												<td><button type='text' class='edit'><i class='fa fa-pencil'></i></button></td>
-												<td><form method='post'><input type='hidden' name='deleteID' value='".$row['ID']."'><button type='submit' name='delete' class='delete' value=''><i class='fa fa-trash'></i></button></td>
-											</tr>
-									";
-							}
-							if(isset($_POST['submit']))
-							{
-								// call the updatefield function with the correct parrameters that is collected from inputs in the while loop.
-								updateField($_POST['albumcode'], $_POST['row'], $_POST['val']);
-								echo '<script>location.href = "manage.php";</script>';
-							}
-							if(isset($_POST['delete']))
-							{
-									// call the deleteRow function with the correct parrameters that is collected from inputs in the while loop.
-								deleteRow($_POST['deleteID']);
-								echo '<script>location.href = "manage.php";</script>';
+							if(isset($_POST['delete'])) { //if clicked on delete button call delete row function
+								$album->delete_row($_POST['ID']);
+								echo '<script>location.href="manage.php"</script>';
 							}
 						?>
+
 					</tbody>
 				</table>
 			</div>

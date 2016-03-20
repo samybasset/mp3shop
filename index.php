@@ -1,7 +1,7 @@
-<?php include('assets/includes/connect.php');
-$active = "index.php";
-session_start(); ?>
-
+<?php
+require 'init.php';
+$_SESSION['login'] = 0;
+?>
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -38,35 +38,21 @@ session_start(); ?>
 					<input type="submit" class="btn btn-default" name='submit' value='Login'>
 				</div>
 			</form>
+      <?php
+        if(isset($_POST['submit'])) {
+          $user = new User();
+          $get_user = $user->get_user($_POST['name']);
+          if($user->user_login($_POST['name'], $get_user['salt'], $_POST['password']) > 0) {
+            $_SESSION['login'] = 1;
+            $_SESSION['user'] = $_POST['name'];
+            header('location: login/');
+          } elseif($user->user_login($get_user['email'], $get_user['salt'], $_POST['password']) == 0) {
+            echo '<div class="alert alert-danger" role="alert"><b>Oh Oh! </b>Sorry pall, wrong username or password :(</div>';
+          }
+
+        }
+      ?>
 			<!-- End login form -->
-			<?php 
-				//if login button is posted
-				if(isset($_POST['submit']))
-				{
-					if(!empty($_POST['name'] && $_POST['password']))
-					{
-						$password = hash("sha256", $_POST['password']);
-						// $password = $_POST['password'];
-						$q = $db->prepare('select * from klant where email = :1 AND password = :2');
-						$q->execute(array(':1' => $_POST['name'], ':2' => $password));
-						$num = $q->rowCount();
-						$row = $q->fetch(PDO::FETCH_ASSOC);
-						if($num > 0)
-						{
-							$_SESSION['login'] = 1;
-							$_SESSION['naam'] = $_POST['name'];
-							echo '<script> location.href = "login/index.php";</script>';
-						}
-						else {
-							echo '<div class="alert alert-danger" role="alert">Sorry stranger. :(</div>';
-						}
-					}
-					else
-					{
-						echo '<div class="alert alert-danger" role="alert">Please fill in all the fields.</div>';
-					}
-				}
-			?>
 		</div>
 	</div>
 </body>

@@ -1,9 +1,9 @@
-<?php include('../assets/includes/connect.php'); 
-session_start();
-if($_SESSION['login'] != 1)
-{
-	echo '<script>location.href = "../index.php";</script>';
-}
+<?php
+	require '../init.php';
+	$user = new User;
+	if($user->is_user_logged_in() == false) {
+		header('location: ../index.php');
+	}
 ?>
 <!DOCTYPE html>
 <html lang="en">
@@ -30,74 +30,28 @@ if($_SESSION['login'] != 1)
 						<tr>
 							<th>userID</th>
 							<th>username</th>
-							<th>password</th>	
+							<th>password</th>
 						</tr>
-					</th>	
+					</th>
 					<tbody>
-						<?php 
-						// function for editing existing albums.
-							function updateField($userID, $field, $value) {
-								include '../assets/includes/connect.php';
-								$q = $db->prepare('update users set '.$field.' = :1 where ID = :2');
-								$q->execute(array(":1" => $value, ":2" => $userID));
+						<?php
+							$get_user_role = $user->get_user_role($_SESSION['user']);
+							if($get_user_role == 'user') {//if the user role equals user then show a single user(only the logged in user can change his own password)
+								$get_users = $user->get_single_user($_SESSION['user']);
+							} elseif($get_user_role == 'admin') {// if the user role equals admin then show all users(admin can change all user passwords)
+								$get_users = $user->get_users();
 							}
-
-							function deleteRow($userID) {
-								include '../assets/includes/connect.php';
-								$q = $db->prepare('delete from users where ID = :1');
-								$q->execute(array(":1" => $userID));
-							}
-
-							//Looping trough all albums and showing them in a table.
-							$q = $db->prepare("select distinct * from klant");
-							$q->execute();
-							while($row = $q->fetch(PDO::FETCH_ASSOC))
-							{
-								echo "
-										<form method='get'>
-										<tr>
-											<td>
-												
-													".$row['ID']."
-											</td>
-											<td>
-													".$row['email']."
-													<input type='hidden' name='row' value='username'>
-													<input type='hidden' name='userID' value='".$row['ID']."'>
-											</td>
-											<td>
-													<input type='submit' value='click here to reset password' name='reset'>
-													<input type='hidden' name='userID' value='".$row['ID']."'>
-												</form>
-											</td>
-										</tr>
-										</form>
-									";
-							}
-							if(isset($_POST['submit']))
-							{
-								// call the updatefield function with the correct parrameters that is collected from inputs in the while loop.
-								updateField($_POST['userID'], $_POST['row'], $_POST['val']);
-								echo '<script>location.href = "users.php";</script>';
-								$q = prepare('select * from users');
-								$q->execute();
-
-								$row = $q-> fetch(PDO::FETCH_ASSOC);
-								echo "<a href='resetpassword.php?userID=".$_GET['userID']."'>resetpassword.php'?userID=".$_GET['userID']."</a>";
-							}
-							if(isset($_POST['delete']))
-							{
-									// call the deleteRow function with the correct parrameters that is collected from inputs in the while loop.
-								deleteRow($_POST['deleteID']);
-								echo '<script>location.href = "users.php";</script>';
-							}
-							if(isset($_GET['reset']))
-							{
-								$q = $db->prepare('select * from klant');
-								$q->execute();
-								// echo "<script>alert('hooray');</script>";
-								$row = $q-> fetch(PDO::FETCH_ASSOC);
-								echo "<a href='resetpassword.php?userID=".$_GET['userID']."'>resetpassword.php'?userID=".$_GET['userID']."</a>";
+							foreach($get_users as $user) {
+								$_GET['ID'] = $user['ID'];
+								echo '
+										<form method="get">
+											<tr>
+												<td>'.$user['ID'].'</td>
+												<td>'.$user['email'].'</td>
+												<td><a href="resetpassword.php?ID='.$_GET["ID"].'">Reset wachtwoord</a></td>
+												<td>'.$user['role'].'</td>
+										  </tr>
+										</form>';
 							}
 						?>
 					</tbody>

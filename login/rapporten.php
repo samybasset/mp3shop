@@ -1,10 +1,11 @@
-<?php include('../assets/includes/connect.php');
-require 'fpdf181/fpdf.php'; 
-session_start();
-if($_SESSION['login'] != 1)
-{
-	echo '<script>location.href = "../index.php";</script>';
-}
+<?php
+	require '../init.php';
+	$user = new User;
+	$date = new DateTime();
+	$order = new Order();
+	if($user->is_user_logged_in() == false) {
+		header('location: ../index.php');
+	}
 ?>
 <!DOCTYPE html>
 <html lang="en">
@@ -34,215 +35,121 @@ if($_SESSION['login'] != 1)
 					</select>
 					<input type="submit" class='btn btn-default' value='View order' name='submit'>
 				</form>
-				<?php if(isset($_POST['submit'])) ?>
 				<table class="table table-hover">
 						<tr>
-							<th>Customor name</th>
 							<th>Weborder</th>
+							<th>Customor name</th>
 							<th>Album titel</th>
-							<th>Prijs</th>	
+							<th>Prijs</th>
 							<th>Aantal</th>
 							<th>Bedrag</th>
 							<th>Download PDF</th>
 						</tr>
 					<tbody>
-						<?php 
-							$q = $db->prepare('select * from klant
-															 where email = :1');
-							$q->execute(array(":1" => $_SESSION['naam']));
-							$row = $q->fetch(PDO::FETCH_ASSOC);
-							$_SESSION['role'] = $row['role'];
-
-							if($row['role'] == 'user')
-							{
-								$q = $db->prepare("select klant.naam, item.weborderID, album.titel, item.aantal, album.prijs, role
-																	 from klant
-																	 inner join (weborder
-																	 inner join (item
-																	 inner join album on album.ID = item.albumID)
-																	 on weborder.ID = item.weborderID)
-																	 on klant.ID = weborder.klantID where email = :1");
-								$q->execute(array(":1" => $_SESSION['naam']));
-								$row = $q->fetchAll(PDO::FETCH_ASSOC);
-
-								$bgcolor = true;
-								$weborder = $row[0]['weborderID'];
-								// echo gettype($wewborder);
-								$subtotaal = 0;
-								$totaal = 0;
-								$totaalprijs = 0;
-								$eerstekeer = true;
-
-								foreach($row as $row)
-								{
-									$_GET['weborderID'] = $row['weborderID'];
-									if($row['role'] == 'user') {
-										echo ($bgcolor ? "<tr class='even'>" : "<tr>");
-
-										//check new weborder
-										if($row['weborderID'] == $weborder)
-										{
-											if($eerstekeer)
-											{
-
-												echo "<td>".$row['naam']."</td>
-															<td>".$row['weborderID']."</td>";
-												$eerstekeer = false;
-											}
-											else
-											{
-												//klant en weborder niet herhalen
-												echo "<td></td><td></td>";
-											}
-												echo "<td>".$row['titel']."</td>
-															<td>".$row['prijs']."</td>
-															<td>".$row['aantal']."</td>
-															<td>".number_format($row['prijs'] * $row['aantal'],2, '.', '')."</td>
-															<td><a href='pdftest.php?weborderID=".$_GET['weborderID']."''>Download PDF</a></td>
-														</tr>";
-												//keep track of totals
-												$subtotaal += $row['aantal'];
-												$totaal += $row['aantal'];
-												$totaalprijs += $row['prijs'] * $row['aantal'];
-										}
-										else
-										{
-											// nieuwe weborder print eerst sub totaal.
-											echo ($bgcolor ? "<tr class='even'>" : "<tr>");
-												echo "<td></td><td></td>
-															<td><b>Subtotaal</b></td>
-															<td><b>".$subtotaal."</b></td><td></td><td></td>
-														</tr>
-														";
-											$subtotaal = 0;
-											$bgcolor = ($bgcolor ? false:true);
-											//print nieuwe weborder
-											echo ($bgcolor ? "<tr class='even'>" : "<tr>");
-												echo "<td>".$row['naam']. "</td>
-															<td>".$row['weborderID']."</td>
-															<td>".$row['titel']."</td>
-															<td>".$row['prijs']."</td>
-															<td>".$row['aantal']."</td>
-															<td>".number_format($row['prijs'] * $row['aantal'],2)."</td>
-															<td><a href='pdftest.php?weborderID=".$_GET['weborderID']."''>Download PDF</a></td>
-														</tr>";
-											//totalen bij houden
-											$subtotaal += $row['aantal'];
-											$totaal += $row['aantal'];
-											$totaalprijs += $row['prijs'] * $row['aantal'];
-										}
-										//Save nieuwe weborderID
-										$weborder = $row['weborderID'];
-									}
-									
-								}
-							} 
-							else 
-							{
-								$q = $db->prepare("select klant.naam, item.weborderID, album.titel, item.aantal, album.prijs, role
-																	 from klant
-																	 inner join (weborder
-																	 inner join (item
-																	 inner join album on album.ID = item.albumID)
-																	 on weborder.ID = item.weborderID)
-																	 on klant.ID = weborder.klantID");
-								$q->execute();
-								$row = $q->fetchAll(PDO::FETCH_ASSOC);
-
-								$bgcolor = true;
-								$weborder = $row[0]['weborderID'];
-								// echo gettype($wewborder);
-								$subtotaal = 0;
-								$totaal = 0;
-								$totaalprijs = 0;
-								$eerstekeer = true;
-
-								foreach($row as $row)
-								{
-										echo ($bgcolor ? "<tr class='even'>" : "<tr>");
-
-										//check new weborder
-										if($row['weborderID'] == $weborder)
-										{
-											if($eerstekeer)
-											{
-
-												echo "<td>".$row['naam']."</td>
-															<td>".$row['weborderID']."</td>";
-												$eerstekeer = false;
-											}
-											else
-											{
-												//klant en weborder niet herhalen
-												echo "<td></td><td></td>";
-											}
-												$_GET['weborderID'] = $row['weborderID'];
-												echo "<td>".$row['titel']."</td>
-															<td>".$row['prijs']."</td>
-															<td>".$row['aantal']."</td>
-															<td>".number_format($row['prijs'] * $row['aantal'],2, '.', '')."</td>
-															<td><a href='pdftest.php?weborderID=".$_GET['weborderID']."''>Download PDF</a></td>
-														</tr>";
-												//keep track of totals
-												$subtotaal += $row['aantal'];
-												$totaal += $row['aantal'];
-												$totaalprijs += $row['prijs'] * $row['aantal'];
-										}
-										else
-										{
-											// nieuwe weborder print eerst sub totaal.
-											echo ($bgcolor ? "<tr class='even'>" : "<tr>");
-												echo "<td></td><td></td>
-															<td><b>Subtotaal</b></td>
-															<td><b>".$subtotaal."</b></td><td></td><td></td>
-														</tr>
-														";
-											$subtotaal = 0;
-											$bgcolor = ($bgcolor ? false:true);
-											$_GET['weborderID'] = $row['weborderID'];
-											//print nieuwe weborder
-											echo ($bgcolor ? "<tr class='even'>" : "<tr>");
-												echo "<td>".$row['naam']. "</td>
-															<td>".$row['weborderID']."</td>
-															<td>".$row['titel']."</td>
-															<td>".$row['prijs']."</td>
-															<td>".$row['aantal']."</td>
-															<td>".number_format($row['prijs'] * $row['aantal'],2)."</td>
-															<td><a href='pdftest.php?weborderID=".$_GET['weborderID']."''>Download PDF</a></td>
-														</tr>";
-											//totalen bij houden
-											$subtotaal += $row['aantal'];
-											$totaal += $row['aantal'];
-											$totaalprijs += $row['prijs'] * $row['aantal'];
-										}
-										//Save nieuwe weborderID
-										$weborder = $row['weborderID'];
-								}
+						<?php
+							$get_role = $user->get_user_role($_SESSION['user']);
+							if($get_role == 'user') {
+								$get_orders = $order->get_single_order($_SESSION['user']);
+							} elseif($get_role == 'admin') {
+								$get_orders = $order->get_orders();
 							}
-							//print laatste subtotaal en eind totaal
-							echo ($bgcolor ? "<tr class='even'>" : "<tr>");
-								echo "<td></td><td></td><td></td>
-											<td><b>Subtotaal</b></td>
-											<td>".$subtotaal."</td><td></td>
-										</tr>";
+							$subtotaal = 0;
+							$totaal = 0;
+							$totaal_albums = 0;
+							$new_order = true;
+							$weborder = $get_orders[0]['weborderID'];
+							$even = true;
 
-							echo "<tr><td></td><td></td><td></td>
-										<td><b>Totaal: </b></td>
-										<td>".$totaal."</td>
+							foreach($get_orders as $get_order) {
+								$_GET['weborderID'] = $get_order['weborderID'];
+								$bedrag = $get_order['verkoopprijs'] * $get_order['aantal'];
+								if($even) {
+									echo '<tr class="even">';
+								} else {
+									echo "<tr>";
+								}
+								if($get_order['weborderID'] == $weborder) {
+									if($new_order) {
+										echo '<td>'.$get_order['naam'].'</td>
+													<td>'.$get_order['weborderID'].'</td>';
+									  $new_order = false;
+									} else {
+										//klant naam in een order niet herhalen
+										echo '<td></td><td></td>';
+									}
 
-										<td>".number_format($totaalprijs,2, '.', '')."</td>
-									</tr>";
-						
-							
+
+						     echo '	<td>'.$get_order['titel'].'</td>
+												<td>'.$get_order['verkoopprijs'].'</td>
+												<td>'.$get_order['aantal'].'</td>
+												<td>&#8364;'.number_format($bedrag, 2, ",", "").'</td>
+												<td><a href="pdftest.php?weborderID='.$_GET['weborderID'].'">Download PDF</a></td>
+										  </tr>';
+								 //totalen bij houden(aantal albums, prijs totaal prijs updaten)
+								 $subtotaal+= $get_order['aantal'];
+								 $totaal_albums += $get_order['aantal'];
+								 $totaal += $bedrag;
+								 $_GET['weborderID'] = $get_order['weborderID'];
+							 } else {
+								 if($even) {//check of even true is, als die true is dan krijgt de order een achtergrond kleurtje(elke order om en om)
+									 echo '<tr class="even">';
+								 } else {
+									 echo '<tr>';
+								 }
+								 //weer geven van subtotalen per order, de extra td's zijn om de subtotalen op te schuiven
+								 echo '
+								 			 <td></td><td></td>
+								 			 <td></td><td><b>Subtotaal: </b></td>
+								 			 <td><b>'.$subtotaal.'</b><td></td><td></td></td></tr>';
+								// reset subtotaal voor nieuwe order
+								$subtotaal = 0;
+								if($even) {//check of even true is, als die true is dan krijgt de order een achtergrond kleurtje(elke order om en om)
+									echo '<tr class="even">';
+									$even = false;
+								} else {
+									echo '<tr>';
+									$even = true;
+								}
+								//Weergeef nieuwe orders
+								echo '
+											<td>'.$get_order['weborderID'].'</td>
+											<td>'.$get_order['naam'].'</td>
+											<td>'.$get_order['titel'].'</td>
+											<td>'.$get_order['verkoopprijs'].'</td>
+											<td>'.$get_order['aantal'].'</td>
+											<td>&#8364;'.number_format($bedrag, 2, ",", "").'</td>
+											<td><a href="pdftest.php?weborderID='.$_GET['weborderID'].'">Download PDF</a></td>
+										</tr>';
+
+   							$subtotaal += $get_order['aantal'];
+								$totaal_albums += $get_order['aantal'];
+								$totaal += $bedrag;
+								$_GET['weborderID'] = $get_order['weborderID'];
+								}
+								$weborder = $get_order['weborderID'];
+							 }
+
+							 if($even) {
+								 echo '<tr class="even">';
+							 } else {
+								 echo '<tr>';
+							 }
+							echo '		<td></td><td></td><td></td>';
+							echo '		<td><b>Subtotaal</b></td>
+								 				<td><b>'.$subtotaal.'</b></td><td></td>
+											 </tr>';
+							echo '<tr>
+											<td></td><td></td><td></td>
+											<td><b>Aantal verkochte albums:</b><td><b>'.$totaal_albums.'</b></td></td>
+											<td><b>Totaal prijs: </b>'.number_format($totaal, 2, ",", "").'<td>
+										</tr>';
+
+
+
+
 						?>
 					</tbody>
 				</table>
-				<?php 
-					if(isset($_POST['submit']))
-					{
-						
-					}
-				?>
 			</div>
 		</div>
 	</div>

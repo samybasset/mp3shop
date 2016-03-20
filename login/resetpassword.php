@@ -1,9 +1,10 @@
-<?php include('../assets/includes/connect.php'); 
-session_start();
-if($_SESSION['login'] != 1) // if loggin session doesnt equals 1 redirect too login page.
-{
-	echo '<script>location.href = "../index.php";</script>';
-}
+<?php
+	require '../init.php';
+	$user = new User;
+	$date = new DateTime();
+	if($user->is_user_logged_in() == false) {
+		header('location: ../index.php');
+	}
 ?>
 <!DOCTYPE html>
 <html lang="en">
@@ -26,44 +27,31 @@ if($_SESSION['login'] != 1) // if loggin session doesnt equals 1 redirect too lo
 			<div class="well"><h3>Manage users</h3></div>
 			<div class="container">
 				<div class="well">
-					<?php 
-						$id = $_GET['userID']; // retrieve get variable from previous page
-						$q = $db->prepare('select * from klant where ID = :1'); // query select all whre userID = retrieved get variable
-						$q->execute(array(":1" => $id));
-						$row = $q->fetch(PDO::FETCH_ASSOC); // retrieve data from database.
-					?>
-					<h4>Hello <?php echo ucfirst($row['naam']) ?>, fill in your new password to reset your password.</h4> <!-- Show username above password fields.-->
+					<h4>Hello <?php echo $_SESSION['user'] ?>, fill in your new password to reset your password.</h4> <!-- Show username above password fields.-->
 				</div>
 				<form method='post'>
-				<div class="form-group">
-					<label>Please fill in a new password</label>
-					<input type="password" class='form-control' name='password'>
-				</div>
-				<div class="form-group">
-					<label>Please repeat filled in password</label>
-					<input type="password" class='form-control' name='repeatPassword'>
-				</div>
-				<div class="form-group">
-					<input type="submit" class='btn btn-default' value='Reset password' name='submit'>
-				</div>
-					
+					<div class="form-group">
+						<label>Please fill in a new password</label>
+						<input type="password" class='form-control' name='password'>
+					</div>
+					<div class="form-group">
+						<label>Please repeat filled in password</label>
+						<input type="password" class='form-control' name='repeatPassword'>
+					</div>
+					<div class="form-group">
+						<input type="submit" class='btn btn-default' value='Reset password' name='submit'>
+					</div>
 				</form>
-				<?php 
-					if(isset($_POST['submit']))//if post submit.
-					{
-						if($_POST['password'] == $_POST['repeatPassword'])//if passwords match
-						{
-							$password = hash("sha256", $_POST['password']);//hashing password too sha256
-							$q = $db->prepare("update klant set `password` = :1 where ID = :2");//query update user password where id is the userID that is stored in Get variable.
-							$q->execute(array(":1" => $password, ":2" => $_GET['userID']));// execute prepared query
-							echo "<script>location.href = 'users.php'</script>";// switch location too users.php page.
-						}
-						else
-						{
-							echo '<div class="alert alert-danger" role="alert">Passwords dont match.</div>';// if passwords don't match show error message.
+				<?php
+					if(isset($_POST['submit'])) {
+						if($_POST['password'] == $_POST['repeatPassword']) {
+							$user->update_password($_GET["ID"], $date->getTimestamp(),$_POST['password']);
+							echo '<div class="alert alert-success" role="alert"><b>Succes!</b> Password changed. :)</div>';
+						} else {
+							echo '<div class="alert alert-danger" role="alert"><b>Oh oh!</b> Passwords don\'t match :(</div>';
 						}
 					}
-				?>
+				 ?>
 			</div>
 		</div>
 	</div>

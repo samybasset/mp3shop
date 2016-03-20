@@ -1,6 +1,4 @@
-<?php include('assets/includes/connect.php');
-$active = "register.php";
-session_start(); ?>
+<?php require 'init.php'; ?>
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -40,7 +38,7 @@ session_start(); ?>
 				</div>
 				<div class="form-group">
 					<label for="username">Email</label>
-					<input type="text" class="form-control" id="username" name="name" placeholder="Fill in email please." required>
+					<input type="text" class="form-control" id="username" name="username" placeholder="Fill in email please." required>
 				</div>
 				<div class="form-group">
 					<label for="password">Password</label>
@@ -54,33 +52,29 @@ session_start(); ?>
 				</div>
 			</form>
 			<!-- End login form -->
-			<?php 
-				//if login button is posted
-				if(isset($_POST['submit']))
-				{
-					if(!empty($_POST['name'] && $_POST['password']))
-					{
-						$password = hash('sha256', $_POST['password']);
-
-						$q = $db->prepare('insert into klant (`naam`, `adres`, `postcode`, `woonplaats`, `email`, `password`) 
-											values (:1, :2, :3, :4, :5, :6)');
-						$q->execute(array(":1" => $_POST['name'],
-										  ":2" => $_POST['address'],
-										  ":3" => $_POST['postcode'],
-										  ":4" => $_POST['city'],
-										  ":5" => $_POST['name'],
-										  ":6" => $password
-										 ));
-						echo '<script>location.href = "login/index.php";</script>';
-						$_SESSION['login'] = 1;
-						$_SESSION['naam'] = $_POST['name'];
-					}
-					else
-					{
-						echo '<div class="alert alert-danger" role="alert">Please fill in all the fields.</div>';
-					}
+			<?php
+				if(isset($_POST['submit'])) {
+					$user = new User();
+					$date = new DateTime();
+					$user->register_user($_POST['name'],
+					 										 $_POST['address'],
+															 $_POST['postcode'],
+															 $_POST['city'],
+															 $_POST['username'],
+															 $date->getTimestamp(),
+															 $_POST['password']
+														 );
+						echo '<div class="well"><strong>Account aangemaakt, u kunt nu inloggen</strong></div>';
+						echo $user->register_user($_POST['name'],
+						 										 $_POST['address'],
+																 $_POST['postcode'],
+																 $_POST['city'],
+																 $_POST['username'],
+																 $date->getTimestamp(),
+																 $_POST['password']
+															 );
 				}
-			?>
+			 ?>
 		</div>
 	</div>
 </body>

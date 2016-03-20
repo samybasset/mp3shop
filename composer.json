@@ -1,0 +1,13 @@
+{
+    "name": "samy/mp3shop_oop",
+    "description": "mp3shop school assigment in OOP",
+    "authors": [
+        {
+            "name": "Samy Basset",
+            "email": "samyromeijn1994@gmail.com"
+        }
+    ],
+    "require": {
+        "monolog/monolog": "^1.17"
+    }
+}

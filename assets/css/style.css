@@ -48,11 +48,6 @@ nav .nav {
 .content span {
   display: none;
 }
-/* line 49, ../scss/style.scss */
-.content button {
-  background: none;
-  border: none;
-}
 /* line 53, ../scss/style.scss */
 .content input[type="text"] {
   width: 50%;
@@ -85,4 +80,17 @@ body.users .editTable {
 /* line 79, ../scss/style.scss */
 .even {
   background-color: #eee;
+}
+
+/* line 83, ../scss/style.scss */
+.orders {
+  width: 60%;
+  text-align: center;
+  float: left;
+}
+
+/* line 89, ../scss/style.scss */
+.shoppingcart {
+  width: 40%;
+  float: left;
 }
